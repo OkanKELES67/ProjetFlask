@@ -4,3 +4,7 @@ app = Flask ( __name__ )
 app.config.from_object('config')
 # To get one variable, tape app.config['MY_VARIABLE']
 
+# Create database connection object
+from flask_sqlalchemy import SQLAlchemy
+db = SQLAlchemy()
+db.init_app(app)

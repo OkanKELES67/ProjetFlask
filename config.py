@@ -3,3 +3,7 @@
 SECRET_KEY = "2lzUl{$*D6#`8uXqlU."
 ABOUT = "Bienvenue sur la page à propos de Flask !"
 CONTACT = "Contactez-moi à l'adresse email suivante :"
+
+import os
+basedir = os.path.abspath(os.path.dirname(__file__))
+SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'monApp.db')
