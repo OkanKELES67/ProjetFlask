@@ -1,11 +1,17 @@
-# ProjetFlask
+#                                                       **Projet Flask**
 
-cour du 03/09
+# Cours du 03/09:
 
-j'ai fini le tp1 en 1h30
+j’ai appris à faire un environnement virtuel une première vue et un fichier de configuration
 
-cour du 10/09
+# Cours du 10/09:
 
-j'ai terminer le tp2 dans l'heure .
-j'ai cree 2 classe Auteur et Livre 
-et fait des requete en bash
+j’ai terminé le tp2 en apprenant  à faire des classe et des requête flask en bash 
+
+# Cours du 17/09:
+
+j’ai fait des templates et des vue et leur ai ajouter un style css grâce à render render\_templates
+
+# Cours du 24/09:
+
+j’ai ajouter des fonction à l'intérieur des templates qui me permette de récuperer les resultats des requetes et de les integrer a des tableaux    
