@@ -14,4 +14,8 @@ j’ai fait des templates et des vue et leur ai ajouter un style css grâce à r
 
 # Cours du 24/09:
 
-j’ai ajouter des fonction à l'intérieur des templates qui me permette de récuperer les resultats des requetes et de les integrer a des tableaux    
+j’ai ajouter des fonction à l'intérieur des templates qui me permette de récuperer les resultats des requetes et de les integrer a des tableaux  
+
+# Cours du 01/10:
+
+j'ai ajoutée des fonction a mon site comme ajouter et supprimmer des auteur ainsi que les modifier avec l'equivalant pour les livres 
