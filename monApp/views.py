@@ -1,12 +1,28 @@
 from .app import app
-from flask import render_template ,request
 from monApp.forms import *
-
 from monApp.models import Auteur,Livre
-from flask import url_for , redirect
 from .app import db
+from flask import render_template, request, url_for, redirect
+from flask_login import login_user, logout_user, login_required, current_user
 
+@app.route ("/login/", methods =("GET","POST",))
+def login():
+    unForm = LoginForm()
+    unUser = None
+    if not unForm.is_submitted():
+        unForm.next.data = request.args.get('next')
+    elif unForm.validate_on_submit():
+        unUser = unForm.get_authenticated_user()
+        if unUser:
+            login_user(unUser)
+            next_url = unForm.next.data or url_for("index", name=unUser.Login)
+            return redirect(next_url)
+    return render_template("login.html", form=unForm)
 
+@app.route ("/logout/")
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
 
 @app.route("/about/")
 def about() :
@@ -37,6 +53,7 @@ def getLivres():
     return render_template('livres_list.html', title="R3.01 Dev Web avec Flask", livres=lesLivres)
 
 @app.route('/auteurs/<idA>/update/')
+@login_required
 def updateAuteur(idA):
     unAuteur = Auteur.query.get(idA)
     unForm = FormAuteur(idA=unAuteur.idA , Nom=unAuteur.Nom)
@@ -70,6 +87,7 @@ def createAuteur():
     return render_template("auteur_create.html", createForm=unForm)
 
 @app.route ('/auteur/insert/', methods =("POST" ,))
+@login_required
 def insertAuteur():
     insertedAuteur = None
     unForm = FormAuteur()
@@ -82,12 +100,14 @@ def insertAuteur():
     return render_template("auteur_create.html", createForm=unForm)
 
 @app.route('/auteurs/<idA>/delete/')
+@login_required
 def deleteAuteur(idA):
     unAuteur = Auteur.query.get(idA)
     unForm = FormAuteur(idA=unAuteur.idA, Nom=unAuteur.Nom)
     return render_template("auteur_delete.html",selectedAuteur=unAuteur, deleteForm=unForm)
 
 @app.route ('/auteur/erase/', methods =("POST" ,))
+@login_required
 def eraseAuteur():
     deletedAuteur = None
     unForm = FormAuteur()
@@ -101,6 +121,7 @@ def eraseAuteur():
 
 
 @app.route('/livres/<idL>/update/')
+@login_required
 def updateLivre(idL):
     unLivre = Livre.query.get(idL)
     if not unLivre:
@@ -108,11 +129,34 @@ def updateLivre(idL):
     unForm = FormLivres(idL=unLivre.idL , Titre=unLivre.Titre, Prix=unLivre.Prix, Url=unLivre.Url, Img=unLivre.Img, auteur_id=unLivre.auteur_id)
     return render_template("livre_update.html",selectedLivre=unLivre, updateForm=unForm)
 
+
 @app.route('/livres/<idL>/view/')
 def viewLivre(idL):
     unLivre = Livre.query.get(idL)
-    unForm = FormLivres(idL=unLivre.idL , Titre=unLivre.Titre, Prix=unLivre.Prix, Url=unLivre.Url, Img=unLivre.Img, auteur_id=unLivre.auteur_id)
+    unForm = FormLivres(idL=unLivre.idL , titre=unLivre.Titre, prix=unLivre.Prix, url=unLivre.Url, img=unLivre.Img, auteur_id=unLivre.auteur_id)
     return render_template("livre_view.html",selectedLivre=unLivre, viewForm=unForm)
+
+@app.route('/livre/save/', methods=["POST"])
+@login_required
+def saveLivre():
+    unForm = FormLivres()
+    if unForm.validate_on_submit():
+        idL = int(unForm.idL.data)
+        livre = Livre.query.get(idL)
+        if livre:
+            livre.Titre = unForm.titre.data
+            livre.Prix = float(unForm.prix.data) if unForm.prix.data else None
+            livre.Url = unForm.url.data
+            livre.Img = unForm.img.data
+            livre.auteur_id = int(unForm.auteur_id.data) if unForm.auteur_id.data else None
+            db.session.commit()
+            return redirect(url_for('viewLivre', idL=livre.idL))
+    # En cas d'erreur, on recharge le formulaire avec les erreurs
+    selectedLivre = Livre.query.get(int(unForm.idL.data))
+    return render_template("livre_update.html", selectedLivre=selectedLivre, updateForm=unForm)
+
+
+
 
 
 

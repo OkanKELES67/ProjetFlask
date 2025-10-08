@@ -19,3 +19,7 @@ j’ai ajouter des fonction à l'intérieur des templates qui me permette de ré
 # Cours du 01/10:
 
 j'ai ajoutée des fonction a mon site comme ajouter et supprimmer des auteur ainsi que les modifier avec l'equivalant pour les livres 
+
+# Cours du 08/10:
+
+j'ai travaillé sur l'authentification : ajout d'un modèle User (mot de passe stocké en SHA256), intégration de Flask‑Login (LoginManager et callback load_user), création du formulaire de connexion et des vues login/logout, protection des routes sensibles avec le décorateur @login_required et gestion de la redirection automatique via le champ `next`. J'ai également ajouté des commandes CLI utiles (`syncdb`, `newuser`, `newpasswrd`, `loaddb`) pour gérer la base et les utilisateurs, et mis en place des tests unitaires pour les modèles et certaines commandes.

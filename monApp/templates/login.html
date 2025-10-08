@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block main %}
+<form class="form-horizontal" role="form" method="POST" action="{{ url_for('login') }}">
+{{ form.hidden_tag() }}
+<div class="mb-3">
+    {{ form.Login.label }}
+    {{ form.Login(size=50, class_="form-control") }}
+</div>
+<div class="mb-3">
+    {{ form.Password.label }}
+    {{ form.Password(size=50, class_="form-control") }}
+</div>
+{{ form.next() }}
+<input class="btn btn-success" type="submit" value="Se connecter">
+</form>
+{% endblock %}

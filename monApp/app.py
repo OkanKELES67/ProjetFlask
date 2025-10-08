@@ -1,10 +1,6 @@
 from flask import Flask
 from flask_bootstrap5 import Bootstrap
-
-
-
-
-
+from flask_login import LoginManager
 
 
 app = Flask ( __name__ )
@@ -17,5 +13,11 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 db.init_app(app)
 
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = "login"
+
+login_manager = LoginManager(app)
+login_manager.login_view = " login"
 Bootstrap(app)
 

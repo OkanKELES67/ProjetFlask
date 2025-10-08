@@ -1,5 +1,8 @@
 import click, logging as lg
 from .app import app, db
+from . models import User
+from hashlib import sha256
+
 @app.cli.command()
 @click.argument('filename')
 def loaddb(filename):
@@ -33,3 +36,37 @@ def loaddb(filename):
         db.session.add(objet)
     db.session.commit()
     lg.warning('Database initialized!')
+
+
+@app.cli. command ()
+def syncdb():
+    db.create_all()
+    lg.warning('Database synchronized!')
+
+
+@app.cli.command()
+@click.argument('login')
+@click.argument('pwd')
+def newuser (login, pwd):  
+    m = sha256()
+    m.update(pwd.encode())
+    unUser = User(Login=login ,Password =m.hexdigest())
+    db.session.add(unUser)
+    db.session.commit()
+    lg.warning('User ' + login + ' created!')
+
+
+@app.cli.command()
+@click.argument('login')
+@click.argument('newpwd')
+def newpasswrd(login, newpwd):
+    """Change le mot de passe d'un utilisateur existant."""
+    unUser = User.query.filter_by(Login=login).first()
+    if not unUser:
+        lg.error('User not found: ' + login)
+        return
+    m = sha256()
+    m.update(newpwd.encode())
+    unUser.Password = m.hexdigest()
+    db.session.commit()
+    lg.warning('Password updated for user ' + login)

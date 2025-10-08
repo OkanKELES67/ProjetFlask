@@ -1,7 +1,30 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, HiddenField, DecimalField, IntegerField
-from wtforms.validators import Optional
-from wtforms.validators import DataRequired, NumberRange
+from wtforms import *
+from wtforms.validators import *
+
+from .models import User
+from hashlib import sha256
+
+
+class LoginForm(FlaskForm):
+    Login = StringField('Identifiant', validators=[DataRequired()])
+    Password = PasswordField('Mot de passe', validators=[DataRequired()])
+    next = HiddenField()
+
+    def get_authenticated_user(self):
+        unUser = User.query.get(self.Login.data)
+        if unUser is None:
+            return None
+        m = sha256()
+        m.update(self.Password.data.encode())
+        passwd = m.hexdigest()
+        return unUser if passwd == unUser.Password else None
+    
+
+
+    
+
+
 
 
 class FormAuteur(FlaskForm):
@@ -9,10 +32,11 @@ class FormAuteur(FlaskForm):
     Nom = StringField ('Nom', validators =[DataRequired()])
 
 
+
 class FormLivres(FlaskForm):
     idL=HiddenField('idL')
-    Titre = StringField ('Titre', validators =[DataRequired()])
-    Prix = DecimalField ('Prix', places=2, validators=[DataRequired(), NumberRange(min=0)])
-    Url = StringField ('Url', validators =[DataRequired()])
-    Img = StringField ('Img', validators =[DataRequired()])
-    auteur_id = IntegerField('auteur_id', validators=[Optional()])
+    prix = FloatField('Prix', validators=[DataRequired()])
+    titre = StringField('Titre', validators =[DataRequired()])
+    url = StringField('Url', validators =[DataRequired()])
+    img = StringField('Img', validators =[DataRequired()])
+    auteur = StringField('Auteur', validators =[DataRequired()])
