@@ -1,26 +1,44 @@
 {% extends "base.html" %}
 {% block main %}
-    <h1 >Modification du livre {{ selectedLivre.titre }}</h1>
+    <h1>Modification du livre {{ selectedLivre.Titre }}</h1>
     <form role="form" method="POST" action="{{ url_for('saveLivre') }}">
-    {{ updateForm.hidden_tag() }}
-    <div
-    {% if updateForm.titre.errors %}
-    class="form-group has-error"
-    {% else %}
-    class="form-group mb-3"
-    {% endif %}
-    >
-    {{ updateForm.titre.label }}
-    {{ updateForm.titre(size =50, class_="form-control") }}
-    </div>
-    {% if updateForm.titre.errors %}
-    <ul class ="list-group">
-    {% for e in updateForm.titre.errors %}
-    <li class ="list-group-item list-group-item-danger" >{{ e }} </li >
-    {% endfor %}
-    </ul >
-    {% endif %}
-    <input class ="btn btn-success" type="submit" value ="Enregistrer">
-    <a href="{{ url_for('getLivres') }}" class="btn btn-secondary">Retour</a>
-    </form >
+        {{ updateForm.hidden_tag() }}
+        {{ updateForm.idL(value=selectedLivre.idL, type="hidden") }}
+
+        <div {% if updateForm.titre.errors %}class="form-group has-error"{% else %}class="form-group mb-3"{% endif %}>
+            {{ updateForm.titre.label }}
+            {{ updateForm.titre(size=50, class_="form-control", value=selectedLivre.Titre) }}
+        </div>
+
+        <div class="form-group mb-3">
+            {{ updateForm.prix.label }}
+            {{ updateForm.prix(class_="form-control", value=selectedLivre.Prix) }}
+        </div>
+
+        <div class="form-group mb-3">
+            {{ updateForm.url.label }}
+            {{ updateForm.url(size=60, class_="form-control", value=selectedLivre.Url) }}
+        </div>
+
+        <div class="form-group mb-3">
+            {{ updateForm.img.label }}
+            {{ updateForm.img(size=60, class_="form-control", value=selectedLivre.Img) }}
+        </div>
+
+        <div class="form-group mb-3">
+            {{ updateForm.auteur.label }}
+            {{ updateForm.auteur(class_="form-control", value=selectedLivre.auteur_id) }}
+        </div>
+
+        {% if updateForm.titre.errors %}
+        <ul class="list-group">
+            {% for e in updateForm.titre.errors %}
+            <li class="list-group-item list-group-item-danger">{{ e }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        <input class="btn btn-success" type="submit" value="Enregistrer">
+        <a href="{{ url_for('getLivres') }}" class="btn btn-secondary">Retour</a>
+    </form>
 {% endblock %}

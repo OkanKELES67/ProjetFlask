@@ -10,6 +10,10 @@
     {{ viewForm.prix(size=50, disabled=True, class_="form-control") }}
     {{ viewForm.auteur.label }}
     {{ viewForm.auteur(size=50, disabled=True, class_="form-control") }}
+    {{ viewForm.url.label }}
+    {{ viewForm.url(size=50, disabled=True, class_="form-control") }}
+    {{ viewForm.img.label }}
+    {{ viewForm.img(size=50, disabled=True, class_="form-control") }}
     </div>
     <a href="{{ url_for('getLivres') }}" class="btn btn-secondary">Retour</a>
     </form >

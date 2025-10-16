@@ -133,6 +133,7 @@ def updateLivre(idL):
 @app.route('/livres/<idL>/view/')
 def viewLivre(idL):
     unLivre = Livre.query.get(idL)
+    
     unForm = FormLivres(idL=unLivre.idL , titre=unLivre.Titre, prix=unLivre.Prix, url=unLivre.Url, img=unLivre.Img, auteur_id=unLivre.auteur_id)
     return render_template("livre_view.html",selectedLivre=unLivre, viewForm=unForm)
 
@@ -148,7 +149,8 @@ def saveLivre():
             livre.Prix = float(unForm.prix.data) if unForm.prix.data else None
             livre.Url = unForm.url.data
             livre.Img = unForm.img.data
-            livre.auteur_id = int(unForm.auteur_id.data) if unForm.auteur_id.data else None
+            if unForm.auteur.data:
+                livre.auteur_id = int(unForm.auteur.data)
             db.session.commit()
             return redirect(url_for('viewLivre', idL=livre.idL))
     # En cas d'erreur, on recharge le formulaire avec les erreurs
