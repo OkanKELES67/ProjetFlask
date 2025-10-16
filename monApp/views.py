@@ -35,12 +35,11 @@ def contact() :
 
 @app.route('/')
 def index():
-# si pas de paramètres
-    if len(request.args)==0:
-        return render_template("index.html",title="R3.01 Dev Web avec Flask",name="Cricri")
+    nomLog= current_user.get_id() 
+    if nomLog != None:
+        return render_template("index.html",title="R3.01 Dev Web avec Flask",name=nomLog)
     else :
-        param_name = request.args.get('name')
-        return render_template("index.html",title="R3.01 Dev Web avec Flask",name=param_name)
+        return render_template("index.html",title="R3.01 Dev Web avec Flask",name="Visiteur")
 
 @app.route('/auteurs/')
 def getAuteurs():
@@ -78,8 +77,9 @@ def saveAuteur():
 @app.route('/auteurs/<idA>/view/')
 def viewAuteur(idA):
     unAuteur = Auteur.query.get(idA)
+    lesLivres = Livre.query.filter_by(auteur_id=unAuteur.idA).all()
     unForm = FormAuteur (idA=unAuteur.idA , Nom=unAuteur.Nom)
-    return render_template("auteur_view.html",selectedAuteur=unAuteur, viewForm=unForm)
+    return render_template("auteur_view.html",selectedAuteur=unAuteur, viewForm=unForm, livres=lesLivres)
 
 @app.route('/auteur/')
 def createAuteur():

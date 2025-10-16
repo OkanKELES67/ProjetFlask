@@ -6,7 +6,20 @@
 <div class="form-group mb-3">
 {{ viewForm.Nom.label }}
 {{ viewForm.Nom(size=50, disabled=True, class_="form-control") }}
+<ul>
+
+</ul>
 </div>
+<ul>
+<h3>Liste des livres de {{ selectedAuteur.Nom }}</h3>
+<ul>
+  {% for livre in livres %}
+  {% if livre.auteur_id == selectedAuteur.idA %}
+    <li>{{ livre.Titre }}</li>
+    {% endif %}
+  {% endfor %}
+</ul>
+</ul>
 <a href="{{ url_for('getAuteurs') }}" class="btn btn-secondary">Retour</a>
 </form >
 {% endblock %}
